@@ -39,6 +39,7 @@ public class RocksDBUtils {
      * @return
      */
     public static RocksDBUtils getInstance() {
+        // 减少锁的应用
         if (instance == null) {
             synchronized (RocksDBUtils.class) {
                 if (instance == null) {

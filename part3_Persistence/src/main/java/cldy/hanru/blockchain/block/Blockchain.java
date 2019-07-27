@@ -32,7 +32,7 @@ public class Blockchain {
 		String lastBlockHash = RocksDBUtils.getInstance().getLastBlockHash();
 		if (StringUtils.isBlank(lastBlockHash)){
 			//对应的bucket不存在，说明是第一次获取区块链实例
-			Block genesisBlock = Block.newGenesisBlock();
+			Block genesisBlock = Block.newGenesisBlock(); // 创世区块只会生成一次
 			lastBlockHash = genesisBlock.getHash();
 			RocksDBUtils.getInstance().putBlock(genesisBlock);
 			RocksDBUtils.getInstance().putLastBlockHash(lastBlockHash);
@@ -92,10 +92,13 @@ public class Blockchain {
 		 * @return
 		 */
 		public boolean hashNext() {
-			if (ByteUtils.ZERO_HASH.equals(currentBlockHash)) {
+			// 感觉只需要判断db中是否有区块即可
+
+			if (ByteUtils.ZERO_HASH.equals(currentBlockHash)) { // 这种区块根本不存在
 				return false;
 			}
 			Block lastBlock = RocksDBUtils.getInstance().getBlock(currentBlockHash);
+			// 可能未插入数据库
 			if (lastBlock == null) {
 				return false;
 			}

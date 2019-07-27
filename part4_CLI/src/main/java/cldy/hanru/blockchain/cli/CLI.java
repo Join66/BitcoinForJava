@@ -27,6 +27,27 @@ public class CLI {
 
     }
 
+    public static void main(String[] args) throws ParseException {
+        String[] args1 = {"-data", "2019-7-16"};
+        String[] args2 = {"-h", "tips"};
+        Options options1 = new Options();
+        /*Option helpCmd = Option.builder("h").desc("show help").build();*/
+        Option helpCmd = Option.builder("h").hasArg().desc("show help").build();
+
+        options1.addOption(helpCmd);
+
+        Option data = Option.builder("data").hasArg(true).desc("add block").build();
+
+        options1.addOption(data);
+
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options1, args1);
+        CommandLine cmd2 = parser.parse(options1, args2);
+
+        System.out.println(cmd.getOptionValue("data"));
+        System.out.println(cmd2.getOptionValue("h"));
+    }
+
     /**
      * 打印帮助信息
      */

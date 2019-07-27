@@ -72,6 +72,8 @@ public class ProofOfWork {
         long startTime = System.currentTimeMillis();
         while (nonce < Long.MAX_VALUE) {
             byte[] data = this.prepareData(nonce);
+            /*00009a
+            0001*/
             shaHex = DigestUtils.sha256Hex(data);
             System.out.printf("\r%d: %s",nonce,shaHex);
             if (new BigInteger(shaHex, 16).compareTo(this.target) == -1) {

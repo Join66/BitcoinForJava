@@ -39,9 +39,9 @@ public class RocksDBUtils {
      * @return
      */
     public static RocksDBUtils getInstance() {
-        if (instance == null) {
-            synchronized (RocksDBUtils.class) {
-                if (instance == null) {
+        if (instance == null) { // 防止已赋值加锁
+            synchronized (RocksDBUtils.class) { // 还未加锁 刚好instance被赋值 且释放锁
+                if (instance == null) { // 所以再次判断
                     instance = new RocksDBUtils();
                 }
             }

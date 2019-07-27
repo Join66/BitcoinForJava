@@ -86,68 +86,68 @@ public class CLI {
             e.printStackTrace();
         }
 
-            switch (args[0]) {
-                case "createblockchain":
-                    String createblockchainAddress = cmd.getOptionValue("address");
-                    if (StringUtils.isBlank(createblockchainAddress)) {
-                        help();
-                    }
-                    this.createBlockchain(createblockchainAddress);
-                    break;
-                case "getbalance":
-                    String getBalanceAddress = cmd.getOptionValue("address");
-                    if (StringUtils.isBlank(getBalanceAddress)) {
-                        help();
-                    }
-                    try {
-                        this.getBalance(getBalanceAddress);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }finally {
-                        RocksDBUtils.getInstance().closeDB();
-                    }
-                    break;
-                case "send":
-                    String sendFrom = cmd.getOptionValue("from");
-                    String sendTo = cmd.getOptionValue("to");
-                    String sendAmount = cmd.getOptionValue("amount");
-                    if (StringUtils.isBlank(sendFrom) ||
-                            StringUtils.isBlank(sendTo) ||
-                            !NumberUtils.isDigits(sendAmount)) {
-                        help();
-                    }
-                    try {
-                        this.send(sendFrom, sendTo, Integer.valueOf(sendAmount));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }finally {
-                        RocksDBUtils.getInstance().closeDB();
-                    }
-                    break;
-                case "printchain":
-                    this.printChain();
-                    break;
-                case "h":
-                    this.help();
-                    break;
+        switch (args[0]) {
+            case "createblockchain":
+                String createblockchainAddress = cmd.getOptionValue("address");
+                if (StringUtils.isBlank(createblockchainAddress)) {
+                    help();
+                }
+                this.createBlockchain(createblockchainAddress);
+                break;
+            case "getbalance":
+                String getBalanceAddress = cmd.getOptionValue("address");
+                if (StringUtils.isBlank(getBalanceAddress)) {
+                    help();
+                }
+                try {
+                    this.getBalance(getBalanceAddress);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    RocksDBUtils.getInstance().closeDB();
+                }
+                break;
+            case "send":
+                String sendFrom = cmd.getOptionValue("from");
+                String sendTo = cmd.getOptionValue("to");
+                String sendAmount = cmd.getOptionValue("amount");
+                if (StringUtils.isBlank(sendFrom) ||
+                        StringUtils.isBlank(sendTo) ||
+                        !NumberUtils.isDigits(sendAmount)) {
+                    help();
+                }
+                try {
+                    this.send(sendFrom, sendTo, Integer.valueOf(sendAmount));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    RocksDBUtils.getInstance().closeDB();
+                }
+                break;
+            case "printchain":
+                this.printChain();
+                break;
+            case "h":
+                this.help();
+                break;
 
-                case "createwallet":
-                    try {
-                        this.createWallet();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case "printaddresses":
-                    try {
-                        this.printAddresses();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default:
-                    this.help();
-            }
+            case "createwallet":
+                try {
+                    this.createWallet();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "printaddresses":
+                try {
+                    this.printAddresses();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                this.help();
+        }
 
     }
 
@@ -202,18 +202,18 @@ public class CLI {
 //                    System.out.println("\tData: " + block.getData());
                 System.out.println("\tTransaction: ");
                 for (Transaction tx : block.getTransactions()) {
-                    System.out.printf("\t\t交易ID：%s\n" , Hex.encodeHexString(tx.getTxId()));
+                    System.out.printf("\t\t交易ID：%s\n", Hex.encodeHexString(tx.getTxId()));
                     System.out.println("\t\t输入：");
                     for (TXInput in : tx.getInputs()) {
-                        System.out.printf("\t\t\tTxID:%s\n" , Hex.encodeHexString(in.getTxId()));
-                        System.out.printf("\t\t\tOutputIndex:%d\n" , in.getTxOutputIndex());
-                        System.out.printf("\t\t\tScriptSiq:%s\n" , in.getScriptSig());
+                        System.out.printf("\t\t\tTxID:%s\n", Hex.encodeHexString(in.getTxId()));
+                        System.out.printf("\t\t\tOutputIndex:%d\n", in.getTxOutputIndex());
+                        System.out.printf("\t\t\tScriptSiq:%s\n", in.getScriptSig());
 
                     }
                     System.out.println("\t\t输出：");
                     for (TXOutput out : tx.getOutputs()) {
-                        System.out.printf("\t\t\tvalue:%d\n" , out.getValue());
-                        System.out.printf("\t\t\tScriptPubKey:%s\n" , out.getScriptPubKey());
+                        System.out.printf("\t\t\tvalue:%d\n", out.getValue());
+                        System.out.printf("\t\t\tScriptPubKey:%s\n", out.getScriptPubKey());
                     }
 
 

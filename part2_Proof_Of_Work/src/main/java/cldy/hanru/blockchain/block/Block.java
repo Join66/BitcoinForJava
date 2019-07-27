@@ -1,5 +1,6 @@
 package cldy.hanru.blockchain.block;
 
+import java.math.BigInteger;
 import java.time.Instant;
 
 import org.apache.commons.codec.binary.Hex;
@@ -8,6 +9,9 @@ import cldy.hanru.blockchain.pow.PowResult;
 import cldy.hanru.blockchain.pow.ProofOfWork;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import static cldy.hanru.blockchain.pow.ProofOfWork.TARGET_BITS;
+
 /**
  * 区块
  * @author hanru
@@ -92,6 +96,15 @@ public class Block {
 	public static Block newGenesisBlock() {
         return Block.newBlock(ZERO_HASH, "Genesis Block",0);
     }
-	
 
+
+	public static void main(String[] args) {
+		BigInteger targetValue = BigInteger.ONE.shiftLeft((256 - TARGET_BITS));
+		System.out.println(targetValue);
+		System.out.println(targetValue.toString(16).length());
+		System.out.println(targetValue.toString(16));
+
+		System.out.println(targetValue.toString(2).length());
+		System.out.println(targetValue.toString(2));
+	}
 }

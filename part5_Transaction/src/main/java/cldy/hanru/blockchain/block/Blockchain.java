@@ -41,6 +41,9 @@ public class Blockchain {
 	public static Blockchain createBlockchain(String address) {
 
 		String lastBlockHash = RocksDBUtils.getInstance().getLastBlockHash();
+		// 修改源码也无法无限挖创世矿，POW限制
+		// 还有共识机制，如果人们都不愿意下载你的code
+		// 挖矿你随意，我们不承认即可
 		if (StringUtils.isBlank(lastBlockHash)){
 			//对应的bucket不存在，说明是第一次获取区块链实例
 			// 创建 coinBase 交易
@@ -178,7 +181,7 @@ public class Blockchain {
 					continue;
 				}
 				for (TXInput txInput : transaction.getInputs()) {
-					if (txInput.canUnlockOutputWith(address)) {
+					if (txInput.canUnlockOutputWith(address)) { // 验签
 						String inTxId = Hex.encodeHexString(txInput.getTxId());
 						int[] spentOutIndexArray = spentTXOs.get(inTxId);
 						if (spentOutIndexArray == null) {
