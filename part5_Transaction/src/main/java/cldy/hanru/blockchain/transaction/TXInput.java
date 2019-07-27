@@ -33,6 +33,6 @@ public class TXInput {
      * @return
      */
     public boolean canUnlockOutputWith(String unlockingData) {
-        return this.getScriptSig().endsWith(unlockingData);
+        return this.getScriptSig().endsWith(unlockingData); // 可恶的Reward to address
     }
 }

@@ -118,7 +118,7 @@ public class Blockchain {
 			if (ByteUtils.ZERO_HASH.equals(lastBlock.getPrevBlockHash())) {
 				return true;
 			}
-			return RocksDBUtils.getInstance().getBlock(lastBlock.getPrevBlockHash()) != null;
+			return RocksDBUtils.getInstance().getBlock(lastBlock.getPrevBlockHash()) != null; // 非创世区块存在，其上一个区块应该也存在
 		}
 
 
@@ -169,7 +169,7 @@ public class Blockchain {
 	 * @return 交易ID以及对应的交易输出下标地址
 	 * @throws Exception
 	 */
-	private Map<String, int[]> getAllSpentTXOs(String address) {
+	private Map<String, int[]> getAllSpentTXOs(String address) { // 上一个交易可能有多个输出
 		// 定义TxId ——> spentOutIndex[]，存储交易ID与已被花费的交易输出数组索引值
 		Map<String, int[]> spentTXOs = new HashMap<>();
 		for (BlockchainIterator blockchainIterator = this.getBlockchainIterator(); blockchainIterator.hashNext(); ) {
@@ -198,6 +198,8 @@ public class Blockchain {
 	}
 	/**
 	 * 查找钱包地址对应的所有未花费的交易
+	 *
+	 * !!!地址对应的所有未花费交易输出 = 地址对应的所有交易输出 - 地址对应的所有已花费交易输出
 	 *
 	 * @param address 钱包地址
 	 * @return
@@ -298,7 +300,7 @@ public class Blockchain {
 	 */
 	public static Blockchain initBlockchainFromDB() throws Exception {
 		String lastBlockHash = RocksDBUtils.getInstance().getLastBlockHash();
-		if (lastBlockHash == null) {
+		if (lastBlockHash == null) { // 此处永远不会返回null 而是返回""(getLastBlockHash()) 就算返回了""也初始化成功了 只是还没有任何区块
 			throw new Exception("ERROR: Fail to init blockchain from db. ");
 		}
 		return new Blockchain(lastBlockHash);

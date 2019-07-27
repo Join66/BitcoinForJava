@@ -120,5 +120,5 @@ public class ProofOfWork {
         byte[] data = this.prepareData(this.getBlock().getNonce());
         return new BigInteger(DigestUtils.sha256Hex(data), 16).compareTo(this.target) == -1;
     }
-    
+
 }

@@ -1,0 +1,4 @@
+--db
+    --'blocks' blocksbucket
+                         --hash block
+                         --'l'    last(latest)blockhash

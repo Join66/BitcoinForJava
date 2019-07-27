@@ -76,6 +76,7 @@ public class CLI {
             switch (args[0]) {
                 case "createblockchain":
                     String createblockchainAddress = cmd.getOptionValue("address");
+                    // 可以没有address(返回空)，一旦给了address就必须赋值，否则会抛出异常
                     if (StringUtils.isBlank(createblockchainAddress)) {
                         help();
                     }
