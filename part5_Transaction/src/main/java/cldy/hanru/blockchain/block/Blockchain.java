@@ -169,7 +169,7 @@ public class Blockchain {
 	 * @return 交易ID以及对应的交易输出下标地址
 	 * @throws Exception
 	 */
-	private Map<String, int[]> getAllSpentTXOs(String address) { // 上一个交易可能有多个输出
+	private Map<String, int[]> getAllSpentTXOs(String address) {
 		// 定义TxId ——> spentOutIndex[]，存储交易ID与已被花费的交易输出数组索引值
 		Map<String, int[]> spentTXOs = new HashMap<>();
 		for (BlockchainIterator blockchainIterator = this.getBlockchainIterator(); blockchainIterator.hashNext(); ) {
@@ -218,6 +218,7 @@ public class Blockchain {
 				int[] spentOutIndexArray = allSpentTXOs.get(txId);
 
 				for (int outIndex = 0; outIndex < transaction.getOutputs().length; outIndex++) {
+					// 去除地址对应的已花费交易输出
 					if (spentOutIndexArray != null && ArrayUtils.contains(spentOutIndexArray, outIndex)) {
 						continue;
 					}
@@ -239,14 +240,14 @@ public class Blockchain {
 	 * @return
 	 */
 	public TXOutput[] findUTXO(String address) throws Exception {
-		Transaction[] unspentTxs = this.findUnspentTransactions(address);
+		Transaction[] unspentTxs = this.findUnspentTransactions(address); // 此方法中已经可以返回UTXOS，可能是需要通用的方法
 		TXOutput[] utxos = {};
 		if (unspentTxs == null || unspentTxs.length == 0) {
 			return utxos;
 		}
 		for (Transaction tx : unspentTxs) {
 			for (TXOutput txOutput : tx.getOutputs()) {
-				if (txOutput.canBeUnlockedWith(address)) {
+				if (txOutput.canBeUnlockedWith(address)) { // 未花费的交易中可能包含已花费的交易输出和未花费的交易输出，所以需要再次判断
 					utxos = ArrayUtils.add(utxos, txOutput);
 				}
 			}
